@@ -34,7 +34,7 @@ describe FileParser do
     end
 
     it "calls .process on ParserFactory.get result" do
-      expect(parser_double).to receive(:process)
+      expect(parser_double).to receive(:process).with(file_name)
       parse_file
     end
 

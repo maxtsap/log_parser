@@ -1,3 +1,5 @@
+require_relative 'factories/parser_factory'
+
 class FileParser
   def initialize(cli_args)
     @cli_args = cli_args
@@ -15,7 +17,7 @@ class FileParser
     elsif !File.exist?(file_name)
       'File not found'
     else
-      parser_for(file_name).process
+      parser_for(file_name).process(file_name)
     end
   end
 
