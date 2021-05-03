@@ -2,8 +2,10 @@ require_relative '../../lib/file_parser'
 require_relative '../../lib/factories/parser_factory'
 
 describe FileParser do
-  subject(:parse_file) { FileParser.parse(args) }
+  subject(:parse_file) { FileParser.new(args, formatter_class).parse }
 
+  let(:formatter_class) { double(new: formatter) }
+  let(:formatter) { double(output: 'mocked result') }
   let(:args) { [] }
 
   it { is_expected.to eq('You must provide file name') }
@@ -17,7 +19,7 @@ describe FileParser do
   context "when file exists" do
     let(:file_name) { 'spec/fixtures/real_file.log' }
     let(:args) { [file_name] }
-    let(:parser_double) { double(process: 'mocked result') }
+    let(:parser_double) { double(process: double) }
 
     before do
       allow(ParserFactory).to receive(:get).and_return(parser_double)
@@ -38,7 +40,8 @@ describe FileParser do
       parse_file
     end
 
-    it "returns result of parser's .process" do
+    it "returns result of formatter" do
+      expect(formatter).to receive(:output)
       expect(subject).to eq('mocked result')
     end
   end
