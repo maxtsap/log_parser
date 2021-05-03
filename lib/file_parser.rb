@@ -8,10 +8,20 @@ class FileParser
   end
 
   def parse
-    if @cli_args.first.to_s.empty?
+    file_name = @cli_args.first.to_s
+
+    if file_name.empty?
       'You must provide file name'
-    elsif !File.exist?(@cli_args.first.to_s)
+    elsif !File.exist?(file_name)
       'File not found'
+    else
+      parser_for(file_name).process
     end
+  end
+
+  private
+
+  def parser_for(file_name)
+    @parser ||= ParserFactory.get(file_name)
   end
 end
